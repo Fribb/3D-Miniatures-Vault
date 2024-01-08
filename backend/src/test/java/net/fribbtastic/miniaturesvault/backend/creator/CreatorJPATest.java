@@ -43,7 +43,7 @@ public class CreatorJPATest {
         Creator savedCreator = this.repository.save(this.creator);
 
         Assertions.assertThat(savedCreator).isNotNull();
-        Assertions.assertThat(savedCreator.getId()).isGreaterThan(0);
+        Assertions.assertThat(savedCreator.getId()).isNotNull();
         Assertions.assertThat(savedCreator.getName()).isEqualTo("Test Creator Name 01");
     }
 
@@ -113,8 +113,10 @@ public class CreatorJPATest {
         // save the creator
         this.repository.save(this.creator);
 
+        System.out.println(this.creator);
+
         Assertions.assertThat(this.creator).isNotNull();
-        Assertions.assertThat(this.creator.getId()).isGreaterThan(0);
+        Assertions.assertThat(this.creator.getId()).isNotNull();
 
         // delete the creator
         this.repository.deleteById(this.creator.getId());

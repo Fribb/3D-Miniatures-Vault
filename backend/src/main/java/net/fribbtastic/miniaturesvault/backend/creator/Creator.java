@@ -3,6 +3,8 @@ package net.fribbtastic.miniaturesvault.backend.creator;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 /**
  * @author Frederic Eßer
  */
@@ -16,8 +18,8 @@ import lombok.*;
 public class Creator {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     @NonNull
     private String name;
 

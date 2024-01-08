@@ -46,8 +46,11 @@ class CreatorControllerIntegrationTest {
         Assertions.assertThat(response.getBody()).isNotNull();
         Assertions.assertThat(response.getStatusCode().value()).isEqualTo(200);
         Assertions.assertThat(response.getBody().length).isEqualTo(3);
+        Assertions.assertThat(response.getBody()[0].getId().toString()).isEqualTo("0320a817-a06b-48d8-8d36-a55a95650a10");
         Assertions.assertThat(response.getBody()[0].getName()).isEqualTo("Test Creator Name 01");
+        Assertions.assertThat(response.getBody()[1].getId().toString()).isEqualTo("596202da-948a-4d9d-bb87-0bae675f7336");
         Assertions.assertThat(response.getBody()[1].getName()).isEqualTo("Test Creator Name 02");
+        Assertions.assertThat(response.getBody()[2].getId().toString()).isEqualTo("6e169bf3-ac69-49b9-8e9c-38439b45e9bd");
         Assertions.assertThat(response.getBody()[2].getName()).isEqualTo("Test Creator Name 03");
     }
 

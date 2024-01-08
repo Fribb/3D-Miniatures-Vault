@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Frederic Eßer
@@ -27,8 +28,8 @@ class CreatorServiceImplTest {
     private CreatorServiceImpl service;
 
     private final List<Creator> creatorList = Arrays.asList(
-            new Creator(1L, "Test Creator 01"),
-            new Creator(2L, "Test Creator 02")
+            new Creator(UUID.fromString("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1"), "Test Creator 01"),
+            new Creator(UUID.fromString("1eeaabc2-1093-4692-858b-e21cdee7ead6"), "Test Creator 02")
     );
 
     @BeforeEach
@@ -48,7 +49,9 @@ class CreatorServiceImplTest {
 
         Assertions.assertThat(creators).isNotNull();
         Assertions.assertThat(creators.size()).isEqualTo(2);
+        Assertions.assertThat(creators.get(0).getId().toString()).isEqualTo("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1");
         Assertions.assertThat(creators.get(0).getName()).isEqualTo("Test Creator 01");
+        Assertions.assertThat(creators.get(1).getId().toString()).isEqualTo("1eeaabc2-1093-4692-858b-e21cdee7ead6");
         Assertions.assertThat(creators.get(1).getName()).isEqualTo("Test Creator 02");
     }
 
