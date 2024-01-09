@@ -1,5 +1,7 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import java.util.List;
 @RequestMapping(path = "/creator", produces = "application/json")
 public class CreatorController {
 
+    private static final Logger LOGGER = LogManager.getLogger(CreatorController.class);
+
     @Autowired
     private CreatorServiceImpl service;
 
@@ -26,6 +30,8 @@ public class CreatorController {
      */
     @GetMapping
     public ResponseEntity<List<Creator>> getALlCreators() {
+        LOGGER.debug("new request [getAllCreators]");
+
         List<Creator> creatorList = this.service.getAll();
 
         return new ResponseEntity<>(creatorList, HttpStatus.OK);

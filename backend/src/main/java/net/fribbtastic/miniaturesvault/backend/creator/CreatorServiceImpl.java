@@ -1,5 +1,7 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.List;
 @Service
 public class CreatorServiceImpl implements CreatorService {
 
+    private static final Logger LOGGER = LogManager.getLogger(CreatorServiceImpl.class);
+
     @Autowired
     private CreatorRepository repository;
 
@@ -22,6 +26,7 @@ public class CreatorServiceImpl implements CreatorService {
      */
     @Override
     public List<Creator> getAll() {
+        LOGGER.debug("calling service layer [getAll]");
 
         return new ArrayList<>(this.repository.findAll());
     }
