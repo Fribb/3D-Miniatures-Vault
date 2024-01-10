@@ -1,5 +1,6 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
+import com.github.lkqm.spring.api.version.ApiVersion;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(path = "/creator", produces = "application/json")
+@ApiVersion("1")
 public class CreatorController {
 
     private static final Logger LOGGER = LogManager.getLogger(CreatorController.class);

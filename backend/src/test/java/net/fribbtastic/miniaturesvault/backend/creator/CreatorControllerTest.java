@@ -38,7 +38,7 @@ class CreatorControllerTest {
             new Creator("Test Creator Name 02")
     );
 
-    private final String endpoint = "/creator";
+    private final String endpoint = "/api/v1/creator";
 
     /**
      * Test the MVC Controller to return a list with 2 elements

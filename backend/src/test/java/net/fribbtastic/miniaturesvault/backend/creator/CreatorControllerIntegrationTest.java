@@ -28,7 +28,7 @@ class CreatorControllerIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        this.url = "http://localhost:" + this.port + "/creator";
+        this.url = "http://localhost:" + this.port + "/api/v1/creator";
     }
 
     /**
