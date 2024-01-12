@@ -4,17 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>net.fribbtastic</groupId>
+        <artifactId>3D-Miniatures-Vault</artifactId>
+        <version>${revision}</version>
     </parent>
 
-    <groupId>net.fribbtastic</groupId>
-    <artifactId>3D-Miniatures-Vault</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>3D-Miniatures-Vault</name>
+    <artifactId>backend</artifactId>
+    <name>3DMV-backend</name>
     <description>Project to manage and organize your 3D Printing projects.</description>
+
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>21</java.version>
@@ -36,6 +35,13 @@
 	</build>
 
     <dependencies>
+        <!-- Frontend dependency -->
+        <dependency>
+            <groupId>net.fribbtastic</groupId>
+            <artifactId>frontend-angular</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
