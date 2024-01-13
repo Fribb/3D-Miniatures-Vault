@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.angular;
+package net.fribbtastic.miniaturesvault.backend.index;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author Frederic Eßer
  */
 @Controller
-public class AngularController {
+public class IndexController {
 
     @GetMapping("/")
     public String index() {
