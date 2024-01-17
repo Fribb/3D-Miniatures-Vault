@@ -42,6 +42,7 @@ class CreatorControllerTest {
 
     /**
      * Test the MVC Controller to return a list with 2 elements
+     *
      * @throws Exception Thrown through the MockMVC Perform
      */
     @Test
@@ -53,15 +54,22 @@ class CreatorControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get(this.endpoint).accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Test Creator Name 01"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Test Creator Name 02"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data", Matchers.hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].name").value("Test Creator Name 01"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1]").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1]").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].name").value("Test Creator Name 02"));
+
+        Mockito.verify(this.service, Mockito.times(1)).getAll();
     }
 
     /**
      * Test the MVC Controller while returning an Empty list
+     *
      * @throws Exception Thrown through the MockMVC Perform
      */
     @Test
@@ -73,6 +81,10 @@ class CreatorControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get(this.endpoint).accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
+
+        Mockito.verify(this.service, Mockito.times(1)).getAll();
     }
 }

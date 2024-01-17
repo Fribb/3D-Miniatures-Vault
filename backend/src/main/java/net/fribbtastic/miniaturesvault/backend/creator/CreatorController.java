@@ -1,6 +1,7 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
 import com.github.lkqm.spring.api.version.ApiVersion;
+import net.fribbtastic.miniaturesvault.backend.response.ApiResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,13 @@ public class CreatorController {
      * @return a ResponseEntity with the list of Creators
      */
     @GetMapping
-    public ResponseEntity<List<Creator>> getALlCreators() {
+    public ResponseEntity<ApiResponse<List<Creator>>> getALlCreators() {
         LOGGER.debug("new request [getAllCreators]");
 
         List<Creator> creatorList = this.service.getAll();
 
-        return new ResponseEntity<>(creatorList, HttpStatus.OK);
+        ApiResponse<List<Creator>> response = ApiResponse.createSuccessResponse(HttpStatus.OK, creatorList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
