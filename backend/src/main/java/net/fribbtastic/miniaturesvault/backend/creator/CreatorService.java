@@ -1,6 +1,7 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Frederic Eßer
@@ -9,4 +10,5 @@ import java.util.List;
 public interface CreatorService {
 
     List<Creator> getAll();
+    Creator getOne(UUID id);
 }
