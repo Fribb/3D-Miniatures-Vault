@@ -1,6 +1,7 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
 import net.fribbtastic.miniaturesvault.backend.Application;
+import net.fribbtastic.miniaturesvault.backend.exceptions.ResourceNotFoundException;
 import net.fribbtastic.miniaturesvault.backend.response.ApiResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,5 +84,46 @@ class CreatorControllerIntegrationTest {
         Assertions.assertThat(response.getBody().getStatusCode()).isEqualTo(200);
         Assertions.assertThat(response.getBody().getData()).isNotNull();
         Assertions.assertThat(response.getBody().getData().size()).isEqualTo(0);
+    }
+
+    /**
+     * Integration Test for the Creator Endpoints
+     */
+    @Test
+    @DisplayName("Test: get one creator [Integration]")
+    @Sql({"classpath:creator/truncate.sql"})
+    @Sql({"classpath:creator/insert.sql"})
+    public void testIntegrationGetOneCreator() {
+
+        UUID id = UUID.fromString("0320a817-a06b-48d8-8d36-a55a95650a10");
+
+        ResponseEntity<ApiResponse<Creator>> response = this.template.exchange(this.url + "/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+        });
+
+        Assertions.assertThat(response.getStatusCode().value()).isEqualTo(200);
+        Assertions.assertThat(response.getBody()).isNotNull();
+        Assertions.assertThat(response.getBody().getStatusCode()).isEqualTo(200);
+        Assertions.assertThat(response.getBody().getData()).isNotNull();
+        Assertions.assertThat(response.getBody().getData().getName()).isEqualTo("Test Creator Name 01");
+    }
+
+    @Test
+    @DisplayName("Test: get one missing creator [Integration]")
+    @Sql({"classpath:creator/truncate.sql"})
+    public void testIntegrationGetOneCreator_Empty() {
+
+        UUID id = UUID.fromString("0320a817-a06b-48d8-8d36-a55a95650a10");
+
+        ResponseEntity<ApiResponse<Creator>> response = this.template.exchange(this.url + "/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+        });
+
+        Assertions.assertThat(response.getStatusCode().value()).isEqualTo(404);
+        Assertions.assertThat(response.getBody()).isNotNull();
+        Assertions.assertThat(response.getBody().getStatusCode()).isEqualTo(404);
+        Assertions.assertThat(response.getBody().getErrorDetails()).isNotNull();
+        Assertions.assertThat(response.getBody().getErrorDetails().getType()).isEqualTo(ResourceNotFoundException.class.getSimpleName());
+        Assertions.assertThat(response.getBody().getErrorDetails().getMessage()).isEqualTo("Resource not found");
+        Assertions.assertThat(response.getBody().getErrorDetails().getDetails()).isEqualTo("Resource with the id '" + id + "' could not be found");
+        Assertions.assertThat(response.getBody().getErrorDetails().getTimestamp()).isNotEmpty();
     }
 }
