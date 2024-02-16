@@ -1,5 +1,6 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.fribbtastic.miniaturesvault.backend.exceptions.ResourceNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
@@ -32,6 +33,9 @@ class CreatorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private CreatorServiceImpl service;
@@ -143,5 +147,28 @@ class CreatorControllerTest {
 
         Mockito.verify(this.service, Mockito.times(1)).getOne(id);
 
+    }
+
+    /**
+     * Test the MVC Creator Controller to add a new Creator
+     *
+     * @throws Exception Thrown through the MockMVC Perform
+     */
+    @Test
+    @DisplayName("Test: add a new Creator")
+    public void testMvcAddNewCreator() throws Exception {
+
+        Mockito.when(this.service.addNewCreator(Mockito.any(Creator.class))).thenReturn(this.creator);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post(this.endpoint)
+                .content(this.objectMapper.writeValueAsString(this.creator))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(201))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value("Test Creator 01"));
     }
 }

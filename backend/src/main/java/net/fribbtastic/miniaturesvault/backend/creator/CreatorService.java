@@ -11,4 +11,5 @@ public interface CreatorService {
 
     List<Creator> getAll();
     Creator getOne(UUID id);
+    Creator addNewCreator(Creator creator);
 }

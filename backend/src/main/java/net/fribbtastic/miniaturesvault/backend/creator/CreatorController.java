@@ -7,10 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -59,5 +56,20 @@ public class CreatorController {
         ApiResponse<Creator> response = ApiResponse.createSuccessResponse(HttpStatus.OK, creator);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    /**
+     * Add the POSTed Creator and return it in the response
+     *
+     * @param creator the Creator to be added in the Request Body
+     * @return the {@link ApiResponse} with the added Creator wrapped in a {@link ResponseEntity}
+     */
+    @PostMapping
+    public ResponseEntity<ApiResponse<Creator>> addNewCreator(@RequestBody Creator creator) {
+        Creator newCreator = this.service.addNewCreator(creator);
+
+        ApiResponse<Creator> response = ApiResponse.createSuccessResponse(HttpStatus.CREATED, newCreator);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

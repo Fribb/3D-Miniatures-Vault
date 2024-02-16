@@ -33,10 +33,27 @@ public class CreatorServiceImpl implements CreatorService {
         return new ArrayList<>(this.repository.findAll());
     }
 
+    /**
+     * get a Creator by its ID
+     *
+     * @param id the ID of the Creator
+     * @return the Creator Object
+     */
     @Override
     public Creator getOne(UUID id) {
         LOGGER.debug("calling service layer [getOne]");
 
         return this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
+    /**
+     * Add a new Creator
+     *
+     * @param creator the Creator that should be added
+     * @return the added Creator Objet
+     */
+    @Override
+    public Creator addNewCreator(Creator creator) {
+        return this.repository.save(creator);
     }
 }

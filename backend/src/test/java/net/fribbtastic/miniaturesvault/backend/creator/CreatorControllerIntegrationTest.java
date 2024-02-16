@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
@@ -87,7 +88,8 @@ class CreatorControllerIntegrationTest {
     }
 
     /**
-     * Integration Test for the Creator Endpoints
+     * Integration Test for the Creator Endpoint,
+     * to get a single existing creator
      */
     @Test
     @DisplayName("Test: get one creator [Integration]")
@@ -107,6 +109,10 @@ class CreatorControllerIntegrationTest {
         Assertions.assertThat(response.getBody().getData().getName()).isEqualTo("Test Creator Name 01");
     }
 
+    /**
+     * Integration test for the Creator Endpoint,
+     * to get a missing Creator
+     */
     @Test
     @DisplayName("Test: get one missing creator [Integration]")
     @Sql({"classpath:creator/truncate.sql"})
@@ -125,5 +131,29 @@ class CreatorControllerIntegrationTest {
         Assertions.assertThat(response.getBody().getErrorDetails().getMessage()).isEqualTo("Resource not found");
         Assertions.assertThat(response.getBody().getErrorDetails().getDetails()).isEqualTo("Resource with the id '" + id + "' could not be found");
         Assertions.assertThat(response.getBody().getErrorDetails().getTimestamp()).isNotEmpty();
+    }
+
+    /**
+     * Integration test for the Creator Endpoint,
+     * Test that a Creator can be added
+     */
+    @Test
+    @DisplayName("Test: add a new Creator [integration]")
+    @Sql({"classpath:creator/truncate.sql"})
+    public void testIntegrationAddNewCreator() {
+        Creator newCreator = new Creator("Test New Creator 01");
+
+        HttpEntity<Creator> httpEntity = new HttpEntity<>(newCreator);
+
+        ResponseEntity<ApiResponse<Creator>> response = this.template.exchange(this.url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+        });
+
+        Assertions.assertThat(response.getStatusCode().value()).isEqualTo(201);
+        Assertions.assertThat(response.getBody()).isNotNull();
+        Assertions.assertThat(response.getBody().getStatusCode()).isEqualTo(201);
+        Assertions.assertThat(response.getBody().getData()).isNotNull();
+        Assertions.assertThat(response.getBody().getData().getId()).isNotNull();
+        Assertions.assertThat(response.getBody().getData().getId().toString()).isNotEmpty();
+        Assertions.assertThat(response.getBody().getData().getName()).isEqualTo("Test New Creator 01");
     }
 }

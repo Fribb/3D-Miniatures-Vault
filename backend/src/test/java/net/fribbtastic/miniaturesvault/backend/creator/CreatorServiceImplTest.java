@@ -109,6 +109,25 @@ class CreatorServiceImplTest {
                 .hasMessage("Resource with the id 'eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1' could not be found");
 
         Mockito.verify(this.repository, Mockito.times(1)).findById(id);
+    }
 
+    /**
+     * Test the Service Layer of the Creator to add a new Creator
+     */
+    @Test
+    @DisplayName("Test: add a new Creator")
+    public void testAddNewCreator() {
+
+        Creator creator = new Creator(UUID.fromString("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1"), "Test Creator Name 01");
+
+        Mockito.when(this.repository.save(creator)).thenReturn(creator);
+
+        Creator savedCreator = this.service.addNewCreator(creator);
+
+        Assertions.assertThat(savedCreator).isNotNull();
+        Assertions.assertThat(savedCreator.getId()).isEqualTo(UUID.fromString("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1"));
+        Assertions.assertThat(creator.getName()).isEqualTo("Test Creator Name 01");
+
+        Mockito.verify(this.repository, Mockito.times(1)).save(Mockito.any(Creator.class));
     }
 }
