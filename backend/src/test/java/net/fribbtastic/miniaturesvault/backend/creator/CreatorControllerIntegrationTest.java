@@ -156,4 +156,55 @@ class CreatorControllerIntegrationTest {
         Assertions.assertThat(response.getBody().getData().getId().toString()).isNotEmpty();
         Assertions.assertThat(response.getBody().getData().getName()).isEqualTo("Test New Creator 01");
     }
+
+    /**
+     * Integration Test for the Creator Endpoint,
+     * Test that the Creator can be updated
+     */
+    @Test
+    @DisplayName("Test [Integration]: Update Creator")
+    @Sql({"classpath:creator/insert.sql"})
+    public void testIntegrationUpdateCreator() {
+        UUID id = UUID.fromString("0320a817-a06b-48d8-8d36-a55a95650a10");
+        Creator updateCreator = new Creator("Test Updated Name 01");
+
+        HttpEntity<Creator> httpEntity = new HttpEntity<>(updateCreator);
+
+        ResponseEntity<ApiResponse<Creator>> response = this.template.exchange(this.url + "/" + id, HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
+        });
+
+        Assertions.assertThat(response.getStatusCode().value()).isEqualTo(200);
+        Assertions.assertThat(response.getBody()).isNotNull();
+        Assertions.assertThat(response.getBody().getStatusCode()).isEqualTo(200);
+        Assertions.assertThat(response.getBody().getData()).isNotNull();
+        Assertions.assertThat(response.getBody().getData().getId()).isNotNull();
+        Assertions.assertThat(response.getBody().getData().getId().toString()).isEqualTo(id.toString());
+        Assertions.assertThat(response.getBody().getData().getName()).isEqualTo("Test Updated Name 01");
+    }
+
+    /**
+     * Integration Test for the Creator Endpoint,
+     * Test that the missing Creator cannot be Updated and shows an error message
+     */
+    @Test
+    @DisplayName("Test [Integration]: Update missing Creator")
+    @Sql({"classpath:creator/truncate.sql"})
+    public void testIntegrationUpdateMissingCreator() {
+        UUID id = UUID.fromString("0320a817-a06b-48d8-8d36-a55a95650a10");
+        Creator updateCreator = new Creator("Test Updated Name 01");
+
+        HttpEntity<Creator> httpEntity = new HttpEntity<>(updateCreator);
+
+        ResponseEntity<ApiResponse<Creator>> response = this.template.exchange(this.url + "/" + id, HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
+        });
+
+        Assertions.assertThat(response.getStatusCode().value()).isEqualTo(404);
+        Assertions.assertThat(response.getBody()).isNotNull();
+        Assertions.assertThat(response.getBody().getStatusCode()).isEqualTo(404);
+        Assertions.assertThat(response.getBody().getErrorDetails()).isNotNull();
+        Assertions.assertThat(response.getBody().getErrorDetails().getType()).isEqualTo(ResourceNotFoundException.class.getSimpleName());
+        Assertions.assertThat(response.getBody().getErrorDetails().getMessage()).isEqualTo("Resource not found");
+        Assertions.assertThat(response.getBody().getErrorDetails().getDetails()).isEqualTo("Resource with the id '" + id + "' could not be found");
+        Assertions.assertThat(response.getBody().getErrorDetails().getTimestamp()).isNotEmpty();
+    }
 }

@@ -56,4 +56,22 @@ public class CreatorServiceImpl implements CreatorService {
     public Creator addNewCreator(Creator creator) {
         return this.repository.save(creator);
     }
+
+    /**
+     * Update an existing Creator
+     *
+     * @param id the ID of the creator that should be updated
+     * @param creator the creator Object that should be used to update the existing information
+     * @return the updated Creator Object
+     */
+    @Override
+    public Creator updateCreator(UUID id, Creator creator) {
+        return this.repository.findById(id)
+                .map(c -> {
+                    creator.setId(id);
+                    c = creator;
+                    this.repository.save(c);
+                    return c;
+                }).orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 }

@@ -55,7 +55,7 @@ class CreatorControllerTest {
      * @throws Exception Thrown through the MockMVC Perform
      */
     @Test
-    @DisplayName("Test: get all Creators [WebMVC]")
+    @DisplayName("Test [WebMVC]: get all Creators")
     public void testMvcGetAllCreators() throws Exception {
 
         Mockito.when(this.service.getAll()).thenReturn(this.creatorList);
@@ -82,7 +82,7 @@ class CreatorControllerTest {
      * @throws Exception Thrown through the MockMVC Perform
      */
     @Test
-    @DisplayName("Test: get all Creators with Empty List [WebMVC]")
+    @DisplayName("Test [WebMVC]: get all Creators with Empty List")
     public void testMvcGetAllCreators_Empty() throws Exception {
 
         Mockito.when(this.service.getAll()).thenReturn(Collections.emptyList());
@@ -103,7 +103,7 @@ class CreatorControllerTest {
      * @throws Exception Thrown through the MockMVC Perform
      */
     @Test
-    @DisplayName("Test: get one Creator")
+    @DisplayName("Test [WebMVC]: get one Creator")
     public void testMvcGetOneCreators() throws Exception {
 
         Mockito.when(this.service.getOne(this.creator.getId())).thenReturn(this.creator);
@@ -125,7 +125,7 @@ class CreatorControllerTest {
      * @throws Exception Thrown through the MockMVC Perform
      */
     @Test
-    @DisplayName("Test: get one missing Creator")
+    @DisplayName("Test [WebMVC]: get one missing Creator")
     public void testMvcGetOneCreator_Empty() throws Exception {
 
         UUID id = UUID.randomUUID();
@@ -155,7 +155,7 @@ class CreatorControllerTest {
      * @throws Exception Thrown through the MockMVC Perform
      */
     @Test
-    @DisplayName("Test: add a new Creator")
+    @DisplayName("Test [WebMVC]: add a new Creator")
     public void testMvcAddNewCreator() throws Exception {
 
         Mockito.when(this.service.addNewCreator(Mockito.any(Creator.class))).thenReturn(this.creator);
@@ -170,5 +170,68 @@ class CreatorControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value("Test Creator 01"));
+
+        Mockito.verify(this.service, Mockito.times(1)).addNewCreator(Mockito.any(Creator.class));
+    }
+
+    /**
+     * Test the MVC Creator Controller to update an existing Creator
+     *
+     * @throws Exception Thrown by the MockMVC Perform method
+     */
+    @Test
+    @DisplayName("Test [WebMVC]: update an existing Creator")
+    public void testMvcUpdateCreator() throws Exception {
+
+        UUID id = UUID.randomUUID();
+        Creator updatedCreator = new Creator(id, "Test Updated Creator Name 01");
+
+        Mockito.when(this.service.updateCreator(Mockito.any(UUID.class), Mockito.any(Creator.class))).thenReturn(updatedCreator);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.put(this.endpoint + "/{id}", id)
+                .content(this.objectMapper.writeValueAsString(updatedCreator))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(id.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value("Test Updated Creator Name 01"));
+
+        Mockito.verify(this.service, Mockito.times(1)).updateCreator(Mockito.any(UUID.class), Mockito.any(Creator.class));
+    }
+
+    /**
+     * Test the MVC Creator controller to update a missing Creator
+     *
+     * @throws Exception Thrown by the MockMVC perform method
+     */
+    @Test
+    @DisplayName("Test: [WebMVC]: update a missing Creator")
+    public void testMvcUpdateMissingCreator() throws Exception {
+
+        UUID id = UUID.randomUUID();
+        Creator updatedCreator = new Creator(id, "Test Updated Creator Name 01");
+
+        Mockito.when(this.service.updateCreator(Mockito.any(UUID.class), Mockito.any(Creator.class))).thenThrow(new ResourceNotFoundException(id));
+
+        this.mockMvc.perform(MockMvcRequestBuilders.put(this.endpoint + "/{id}", id)
+                        .content(this.objectMapper.writeValueAsString(updatedCreator))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(result -> Assertions.assertThat(result.getResolvedException())
+                        .isInstanceOf(ResourceNotFoundException.class)
+                        .hasMessage("Resource with the id '" + id + "' could not be found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.type").value(ResourceNotFoundException.class.getSimpleName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.message").value("Resource not found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.details").value("Resource with the id '" + id + "' could not be found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.timestamp").isNotEmpty());
+
+        Mockito.verify(this.service, Mockito.times(1)).updateCreator(Mockito.any(UUID.class), Mockito.any(Creator.class));
     }
 }

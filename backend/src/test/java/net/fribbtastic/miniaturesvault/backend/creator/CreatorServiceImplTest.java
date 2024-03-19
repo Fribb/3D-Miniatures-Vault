@@ -130,4 +130,40 @@ class CreatorServiceImplTest {
 
         Mockito.verify(this.repository, Mockito.times(1)).save(Mockito.any(Creator.class));
     }
+
+    /**
+     * Test to update an existing Creator
+     */
+    @Test
+    @DisplayName("Test: update an existing Creator")
+    public void testUpdateCreator() {
+        UUID id = UUID.fromString("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1");
+
+        Creator creator = new Creator(id, "Test Creator Name 01");
+
+        Mockito.when(this.repository.findById(id)).thenReturn(Optional.of(creator));
+        Mockito.when(this.repository.save(creator)).thenReturn(creator);
+
+        Creator updatedCreator = this.service.updateCreator(id, creator);
+
+        Assertions.assertThat(updatedCreator).isNotNull();
+        Assertions.assertThat(updatedCreator.getId()).isEqualTo(id);
+        Assertions.assertThat(updatedCreator.getName()).isEqualTo("Test Creator Name 01");
+    }
+
+    /**
+     * Test to update a missing Creator
+     */
+    @Test
+    @DisplayName("Test: update a missing Creator")
+    public void testUpdateMissingCreator() {
+        UUID id = UUID.fromString("eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1");
+
+        Creator creator = new Creator(id, "Test Creator Name 01");
+
+        Mockito.when(this.repository.findById(id)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> this.service.updateCreator(id, creator)).isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Resource with the id 'eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1' could not be found");
+    }
 }
