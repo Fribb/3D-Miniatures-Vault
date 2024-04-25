@@ -74,4 +74,14 @@ public class CreatorServiceImpl implements CreatorService {
                     return c;
                 }).orElseThrow(() -> new ResourceNotFoundException(id));
     }
+
+    /**
+     * Delete a Creator by its ID
+     *
+     * @param id the ID of the Creator that should be deleted
+     */
+    @Override
+    public void deleteCreator(UUID id) {
+        this.repository.delete(this.getOne(id));
+    }
 }

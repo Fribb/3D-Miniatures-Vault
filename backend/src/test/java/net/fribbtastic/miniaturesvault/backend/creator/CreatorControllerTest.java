@@ -208,7 +208,7 @@ class CreatorControllerTest {
      * @throws Exception Thrown by the MockMVC perform method
      */
     @Test
-    @DisplayName("Test: [WebMVC]: update a missing Creator")
+    @DisplayName("Test [WebMVC]: update a missing Creator")
     public void testMvcUpdateMissingCreator() throws Exception {
 
         UUID id = UUID.randomUUID();
@@ -233,5 +233,52 @@ class CreatorControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error.timestamp").isNotEmpty());
 
         Mockito.verify(this.service, Mockito.times(1)).updateCreator(Mockito.any(UUID.class), Mockito.any(Creator.class));
+    }
+
+    /**
+     * Test to delete an existing Creator
+     *
+     * @throws Exception Thrown by the MockMVC perform method
+     */
+    @Test
+    @DisplayName("Test [WebMVC]: delete an existing Creator")
+    public void testMvcDeleteCreator() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        Mockito.doNothing().when(this.service).deleteCreator(id);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.delete(this.endpoint + "/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").doesNotExist());
+
+        Mockito.verify(this.service, Mockito.times(1)).deleteCreator(id);
+    }
+
+    /**
+     * Test to delete a missing Creator
+     *
+     * @throws Exception Thrown by the MockMVC perform method
+     */
+    @Test
+    @DisplayName("Test [WebMVC]: delete a missing Creator")
+    public void testMvcDeleteMissingCreator() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        Mockito.doThrow(new ResourceNotFoundException(id)).when(this.service).deleteCreator(id);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.delete(this.endpoint + "/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(result -> Assertions.assertThat(result.getResolvedException())
+                        .isInstanceOf(ResourceNotFoundException.class)
+                        .hasMessage("Resource with the id '" + id + "' could not be found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.type").value(ResourceNotFoundException.class.getSimpleName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.message").value("Resource not found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.details").value("Resource with the id '" + id + "' could not be found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error.timestamp").isNotEmpty());
     }
 }

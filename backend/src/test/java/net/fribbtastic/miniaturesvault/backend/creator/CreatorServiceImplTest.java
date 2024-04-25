@@ -166,4 +166,37 @@ class CreatorServiceImplTest {
         Assertions.assertThatThrownBy(() -> this.service.updateCreator(id, creator)).isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("Resource with the id 'eeb41c5f-9026-4cf1-9da1-23a2ef0cd9c1' could not be found");
     }
+
+    /**
+     * Test to delete an existing Creator
+     */
+    @Test
+    @DisplayName("Test: Delete an existing Creator")
+    public void testDeleteCreator() {
+        UUID id = UUID.randomUUID();
+
+        Creator deleteCreator = new Creator(id, "Test Creator Name 01");
+
+        Mockito.when(this.repository.findById(id)).thenReturn(Optional.of(deleteCreator));
+
+        this.service.deleteCreator(id);
+
+        Mockito.verify(this.repository, Mockito.times(1)).findById(id);
+        Mockito.verify(this.repository, Mockito.times(1)).delete(deleteCreator);
+    }
+
+    /**
+     * Test to delete a missing Creator
+     */
+    @Test
+    @DisplayName("Test: delete a missing Creator")
+    public void testDeleteMissingCreator() {
+        UUID id = UUID.randomUUID();
+
+        Mockito.when(this.repository.findById(id)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> this.service.deleteCreator(id))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Resource with the id '" + id + "' could not be found");
+    }
 }

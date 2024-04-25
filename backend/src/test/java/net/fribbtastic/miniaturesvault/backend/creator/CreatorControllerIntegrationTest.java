@@ -207,4 +207,75 @@ class CreatorControllerIntegrationTest {
         Assertions.assertThat(response.getBody().getErrorDetails().getDetails()).isEqualTo("Resource with the id '" + id + "' could not be found");
         Assertions.assertThat(response.getBody().getErrorDetails().getTimestamp()).isNotEmpty();
     }
+
+    /**
+     * Integration Test for the Creator Endpoint,
+     * Test that we can delete an existing Creator
+     */
+    @Test
+    @DisplayName("Test [Integration]: delete Creator")
+    @Sql({"classpath:creator/truncate.sql"})
+    @Sql({"classpath:creator/insert.sql"})
+    public void testIntegrationDeleteCreator() {
+        UUID id = UUID.fromString("0320a817-a06b-48d8-8d36-a55a95650a10");
+
+        ResponseEntity<ApiResponse<Creator>> beforeDeletionResponse = this.template.exchange(this.url + "/" + id, HttpMethod.GET, null,  new ParameterizedTypeReference<>(){
+        });
+
+        // Asser that there is a Creator and the Data is as expected
+        Assertions.assertThat(beforeDeletionResponse.getStatusCode().value()).isEqualTo(200);
+        Assertions.assertThat(beforeDeletionResponse.getBody()).isNotNull();
+        Assertions.assertThat(beforeDeletionResponse.getBody().getStatusCode()).isEqualTo(200);
+        Assertions.assertThat(beforeDeletionResponse.getBody().getData()).isNotNull();
+        Assertions.assertThat(beforeDeletionResponse.getBody().getData().getId()).isNotNull();
+        Assertions.assertThat(beforeDeletionResponse.getBody().getData().getId().toString()).isEqualTo(id.toString());
+        Assertions.assertThat(beforeDeletionResponse.getBody().getData().getName()).isEqualTo("Test Creator Name 01");
+
+        // delete the Creator
+        ResponseEntity<ApiResponse<Creator>> deletionResponse = this.template.exchange(this.url + "/" + id, HttpMethod.DELETE, null,  new ParameterizedTypeReference<>(){
+        });
+
+        Assertions.assertThat(deletionResponse.getStatusCode().value()).isEqualTo(200);
+        Assertions.assertThat(deletionResponse.getBody()).isNotNull();
+        Assertions.assertThat(deletionResponse.getBody().getStatusCode()).isEqualTo(200);
+        Assertions.assertThat(deletionResponse.getBody().getData()).isNull();
+
+        // check if the Creator was actually deleted
+        ResponseEntity<ApiResponse<Creator>> afterDeletionResponse = this.template.exchange(this.url + "/" + id, HttpMethod.GET, null,  new ParameterizedTypeReference<>(){
+        });
+
+        Assertions.assertThat(afterDeletionResponse.getStatusCode().value()).isEqualTo(404);
+        Assertions.assertThat(afterDeletionResponse.getBody()).isNotNull();
+        Assertions.assertThat(afterDeletionResponse.getBody().getStatusCode()).isEqualTo(404);
+        Assertions.assertThat(afterDeletionResponse.getBody().getErrorDetails()).isNotNull();
+        Assertions.assertThat(afterDeletionResponse.getBody().getErrorDetails().getType()).isEqualTo(ResourceNotFoundException.class.getSimpleName());
+        Assertions.assertThat(afterDeletionResponse.getBody().getErrorDetails().getMessage()).isEqualTo("Resource not found");
+        Assertions.assertThat(afterDeletionResponse.getBody().getErrorDetails().getDetails()).isEqualTo("Resource with the id '" + id + "' could not be found");
+        Assertions.assertThat(afterDeletionResponse.getBody().getErrorDetails().getTimestamp()).isNotEmpty();
+    }
+
+    /**
+     * Integration Test for the Creator Endpoint,
+     * Test that we cannot delete a missing Creator and that there is an error message showing instead
+     */
+    @Test
+    @DisplayName("Test [Integration]: delete missing Creator")
+    @Sql({"classpath:creator/truncate.sql"})
+    public void testIntegrationDeleteMissingCreator() {
+        UUID id = UUID.fromString("0320a817-a06b-48d8-8d36-a55a95650a10");
+
+        // delete the Creator
+        ResponseEntity<ApiResponse<Creator>> deletionErrorResponse = this.template.exchange(this.url + "/" + id, HttpMethod.DELETE, null,  new ParameterizedTypeReference<>(){
+        });
+
+        Assertions.assertThat(deletionErrorResponse.getStatusCode().value()).isEqualTo(404);
+        Assertions.assertThat(deletionErrorResponse.getBody()).isNotNull();
+        Assertions.assertThat(deletionErrorResponse.getBody().getStatusCode()).isEqualTo(404);
+        Assertions.assertThat(deletionErrorResponse.getBody().getErrorDetails()).isNotNull();
+        Assertions.assertThat(deletionErrorResponse.getBody().getErrorDetails().getType()).isEqualTo(ResourceNotFoundException.class.getSimpleName());
+        Assertions.assertThat(deletionErrorResponse.getBody().getErrorDetails().getMessage()).isEqualTo("Resource not found");
+        Assertions.assertThat(deletionErrorResponse.getBody().getErrorDetails().getDetails()).isEqualTo("Resource with the id '" + id + "' could not be found");
+        Assertions.assertThat(deletionErrorResponse.getBody().getErrorDetails().getTimestamp()).isNotEmpty();
+    }
+
 }

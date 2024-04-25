@@ -88,4 +88,19 @@ public class CreatorController {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    /**
+     * Delete the Creator with the specific ID passed with the {@link RequestBody}
+     *
+     * @param id the ID of the Creator that should be deleted
+     * @return the {@link ApiResponse} (will 'null' data) with the updated Creator wrapped in a {@link ResponseEntity}
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> deleteCreator(@PathVariable UUID id) {
+        this.service.deleteCreator(id);
+
+        ApiResponse<?> response = ApiResponse.createSuccessResponse(HttpStatus.OK, null);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

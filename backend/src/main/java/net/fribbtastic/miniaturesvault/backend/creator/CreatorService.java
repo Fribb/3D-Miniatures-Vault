@@ -13,4 +13,5 @@ public interface CreatorService {
     Creator getOne(UUID id);
     Creator addNewCreator(Creator creator);
     Creator updateCreator(UUID id, Creator creator);
+    void deleteCreator(UUID id);
 }
