@@ -1,6 +1,6 @@
 {
-  "name": "3-d-miniatures-vault",
-  "version": "0.0.0",
+  "name": "3d-miniatures-vault",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
