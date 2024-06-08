@@ -18,9 +18,9 @@
     <properties>
         <java.version>21</java.version>
         <h2db.version>2.2.224</h2db.version>
-        <lombok.version>1.18.30</lombok.version>
-        <mockito.version>5.8.0</mockito.version>
-        <assertj.version>3.25.1</assertj.version>
+        <lombok.version>1.18.32</lombok.version>
+        <mockito.version>5.11.0</mockito.version>
+        <assertj.version>3.26.0</assertj.version>
         <openapi.version>2.3.0</openapi.version>
         <apiversion.version>1.4.0</apiversion.version>
     </properties>
@@ -52,7 +52,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -106,12 +105,6 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <!-- version is coming from the parent -->
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-log4j2 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-            <!-- version is coming from the parent -->
-        </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -160,5 +153,12 @@
         </dependency>
 
     </dependencies>
+    <repositories>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
 
 </project>

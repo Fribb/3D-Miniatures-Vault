@@ -1,5 +1,11 @@
 # suppress inspection "UnusedProperty" for whole file
-logging.level.root=INFO
+
+# logging
+logging.level.org.springframework.web=ERROR
+logging.level.org.hibernate=ERROR
+logging.level.net.fribbtastic=INFO
+
+# Api config
 springdoc.api-docs.path=/api-docs
 api.version.uri-prefix=/api
 

@@ -2,8 +2,8 @@ package net.fribbtastic.miniaturesvault.backend.creator;
 
 import com.github.lkqm.spring.api.version.ApiVersion;
 import net.fribbtastic.miniaturesvault.backend.response.ApiResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @ApiVersion("1")
 public class CreatorController {
 
-    private static final Logger LOGGER = LogManager.getLogger(CreatorController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreatorController.class);
 
     @Autowired
     private CreatorServiceImpl service;
@@ -32,7 +32,7 @@ public class CreatorController {
      */
     @GetMapping
     public ResponseEntity<ApiResponse<List<Creator>>> getALlCreators() {
-        LOGGER.debug("new request [getAllCreators]");
+        LOGGER.debug("get all creators");
 
         List<Creator> creatorList = this.service.getAll();
 
@@ -49,7 +49,7 @@ public class CreatorController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Creator>> getOneCreator(@PathVariable UUID id) {
-        LOGGER.debug("new request [getOneCreator]");
+        LOGGER.debug("get creator with ID={}", id);
 
         Creator creator = this.service.getOne(id);
 
@@ -66,6 +66,8 @@ public class CreatorController {
      */
     @PostMapping
     public ResponseEntity<ApiResponse<Creator>> addNewCreator(@RequestBody Creator creator) {
+        LOGGER.debug("add new creator with name={}", creator.getName());
+
         Creator newCreator = this.service.addNewCreator(creator);
 
         ApiResponse<Creator> response = ApiResponse.createSuccessResponse(HttpStatus.CREATED, newCreator);
@@ -82,6 +84,8 @@ public class CreatorController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Creator>> updateCreator(@PathVariable UUID id, @RequestBody Creator creator) {
+        LOGGER.debug("update creator with ID={}", id);
+
         Creator updatedCreator = this.service.updateCreator(id, creator);
 
         ApiResponse<Creator> response = ApiResponse.createSuccessResponse(HttpStatus.OK, updatedCreator);
@@ -97,6 +101,8 @@ public class CreatorController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> deleteCreator(@PathVariable UUID id) {
+        LOGGER.debug("delete creator with ID={}", id);
+
         this.service.deleteCreator(id);
 
         ApiResponse<?> response = ApiResponse.createSuccessResponse(HttpStatus.OK, null);

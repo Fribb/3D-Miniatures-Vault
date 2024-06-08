@@ -1,8 +1,8 @@
 package net.fribbtastic.miniaturesvault.backend.creator;
 
 import net.fribbtastic.miniaturesvault.backend.exceptions.ResourceNotFoundException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 public class CreatorServiceImpl implements CreatorService {
 
-    private static final Logger LOGGER = LogManager.getLogger(CreatorServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreatorServiceImpl.class);
 
     @Autowired
     private CreatorRepository repository;
@@ -28,7 +28,7 @@ public class CreatorServiceImpl implements CreatorService {
      */
     @Override
     public List<Creator> getAll() {
-        LOGGER.debug("calling service layer [getAll]");
+        LOGGER.debug("get all Creators");
 
         return new ArrayList<>(this.repository.findAll());
     }
@@ -41,7 +41,7 @@ public class CreatorServiceImpl implements CreatorService {
      */
     @Override
     public Creator getOne(UUID id) {
-        LOGGER.debug("calling service layer [getOne]");
+        LOGGER.debug("get creator with id={}", id);
 
         return this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
@@ -54,6 +54,8 @@ public class CreatorServiceImpl implements CreatorService {
      */
     @Override
     public Creator addNewCreator(Creator creator) {
+        LOGGER.debug("add new creator with name={}", creator.getName());
+
         return this.repository.save(creator);
     }
 
@@ -66,6 +68,8 @@ public class CreatorServiceImpl implements CreatorService {
      */
     @Override
     public Creator updateCreator(UUID id, Creator creator) {
+        LOGGER.debug("update creator with ID={}", id);
+
         return this.repository.findById(id)
                 .map(c -> {
                     creator.setId(id);
@@ -82,6 +86,8 @@ public class CreatorServiceImpl implements CreatorService {
      */
     @Override
     public void deleteCreator(UUID id) {
+        LOGGER.debug("delete creator with ID={}", id);
+
         this.repository.delete(this.getOne(id));
     }
 }
