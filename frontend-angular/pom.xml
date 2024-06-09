@@ -16,7 +16,8 @@
 
   <properties>
     <frontend-maven.version>1.15.0</frontend-maven.version>
-    <node.version>v20.11.0</node.version>
+    <node.version>v22.2.0</node.version>
+    <npm.version>9.6.6</npm.version>
   </properties>
 
   <build>
@@ -40,6 +41,7 @@
         <version>${frontend-maven.version}</version>
         <configuration>
           <nodeVersion>${node.version}</nodeVersion>
+          <npmVersion>${npm.version}</npmVersion>
         </configuration>
         <executions>
 
