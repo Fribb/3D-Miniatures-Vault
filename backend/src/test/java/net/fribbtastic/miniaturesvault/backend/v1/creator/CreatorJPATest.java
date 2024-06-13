@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.creator;
+package net.fribbtastic.miniaturesvault.backend.v1.creator;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ import java.util.Optional;
  * @author Frederic Eßer
  */
 @DataJpaTest
-public class CreatorJPATest {
+class CreatorJPATest {
 
     @Autowired
     private CreatorRepository repository;

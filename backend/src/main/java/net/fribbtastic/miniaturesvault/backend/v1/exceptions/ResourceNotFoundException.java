@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.exceptions;
+package net.fribbtastic.miniaturesvault.backend.v1.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.creator;
+package net.fribbtastic.miniaturesvault.backend.v1.creator;
 
 import java.util.List;
 import java.util.UUID;

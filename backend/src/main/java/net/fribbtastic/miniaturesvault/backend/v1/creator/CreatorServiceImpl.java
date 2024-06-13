@@ -1,6 +1,6 @@
-package net.fribbtastic.miniaturesvault.backend.creator;
+package net.fribbtastic.miniaturesvault.backend.v1.creator;
 
-import net.fribbtastic.miniaturesvault.backend.exceptions.ResourceNotFoundException;
+import net.fribbtastic.miniaturesvault.backend.v1.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

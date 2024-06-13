@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.creator;
+package net.fribbtastic.miniaturesvault.backend.v1.creator;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

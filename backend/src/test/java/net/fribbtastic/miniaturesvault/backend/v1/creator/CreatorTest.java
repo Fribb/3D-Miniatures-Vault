@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.creator;
+package net.fribbtastic.miniaturesvault.backend.v1.creator;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Frederic Eßer
  */
-public class CreatorTest {
+class CreatorTest {
 
     @Test
     @DisplayName("Test: new Creator with name")
@@ -18,4 +18,5 @@ public class CreatorTest {
         Assertions.assertThat(creator).isNotNull();
         Assertions.assertThat(creator.getName()).isEqualTo("Test Creator 01");
     }
+
 }

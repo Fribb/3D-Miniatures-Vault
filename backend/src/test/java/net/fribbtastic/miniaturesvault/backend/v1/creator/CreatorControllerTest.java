@@ -1,7 +1,7 @@
-package net.fribbtastic.miniaturesvault.backend.creator;
+package net.fribbtastic.miniaturesvault.backend.v1.creator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.fribbtastic.miniaturesvault.backend.exceptions.ResourceNotFoundException;
+import net.fribbtastic.miniaturesvault.backend.v1.exceptions.ResourceNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -161,9 +161,9 @@ class CreatorControllerTest {
         Mockito.when(this.service.addNewCreator(Mockito.any(Creator.class))).thenReturn(this.creator);
 
         this.mockMvc.perform(MockMvcRequestBuilders.post(this.endpoint)
-                .content(this.objectMapper.writeValueAsString(this.creator))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(this.objectMapper.writeValueAsString(this.creator))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(201))
@@ -189,9 +189,9 @@ class CreatorControllerTest {
         Mockito.when(this.service.updateCreator(Mockito.any(UUID.class), Mockito.any(Creator.class))).thenReturn(updatedCreator);
 
         this.mockMvc.perform(MockMvcRequestBuilders.put(this.endpoint + "/{id}", id)
-                .content(this.objectMapper.writeValueAsString(updatedCreator))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(this.objectMapper.writeValueAsString(updatedCreator))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200))

@@ -1,8 +1,8 @@
-package net.fribbtastic.miniaturesvault.backend.creator;
+package net.fribbtastic.miniaturesvault.backend.v1.creator;
 
 import net.fribbtastic.miniaturesvault.backend.Application;
-import net.fribbtastic.miniaturesvault.backend.exceptions.ResourceNotFoundException;
-import net.fribbtastic.miniaturesvault.backend.response.ApiResponse;
+import net.fribbtastic.miniaturesvault.backend.v1.exceptions.ResourceNotFoundException;
+import net.fribbtastic.miniaturesvault.backend.v1.response.ApiResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -277,5 +277,4 @@ class CreatorControllerIntegrationTest {
         Assertions.assertThat(deletionErrorResponse.getBody().getErrorDetails().getDetails()).isEqualTo("Resource with the id '" + id + "' could not be found");
         Assertions.assertThat(deletionErrorResponse.getBody().getErrorDetails().getTimestamp()).isNotEmpty();
     }
-
 }

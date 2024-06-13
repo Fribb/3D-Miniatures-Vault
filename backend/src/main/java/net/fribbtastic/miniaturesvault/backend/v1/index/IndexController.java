@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.index;
+package net.fribbtastic.miniaturesvault.backend.v1.index;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

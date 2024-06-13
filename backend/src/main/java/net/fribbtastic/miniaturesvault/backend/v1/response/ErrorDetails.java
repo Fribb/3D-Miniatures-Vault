@@ -1,4 +1,4 @@
-package net.fribbtastic.miniaturesvault.backend.response;
+package net.fribbtastic.miniaturesvault.backend.v1.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

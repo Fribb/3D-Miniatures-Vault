@@ -1,6 +1,6 @@
-package net.fribbtastic.miniaturesvault.backend.exceptions;
+package net.fribbtastic.miniaturesvault.backend.v1.exceptions;
 
-import net.fribbtastic.miniaturesvault.backend.response.ApiResponse;
+import net.fribbtastic.miniaturesvault.backend.v1.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
