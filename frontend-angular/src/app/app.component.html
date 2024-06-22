@@ -1,11 +1,5 @@
-<div class="wrapper" fxLayout="column">
-  <header class="container">
-    <app-header></app-header>
-  </header>
-  <main id="content" class="container" fxFlex>
-    <router-outlet></router-outlet>
-  </main>
-  <footer class="container" fxFlexOffset="auto">
-    <app-footer></app-footer>
-  </footer>
+<div id="app-wrapper" class="flex flex-col h-screen overflow-hidden">
+  <header><app-header></app-header></header>
+  <main class="grow overflow-auto"><router-outlet></router-outlet></main>
+  <footer><app-footer></app-footer></footer>
 </div>

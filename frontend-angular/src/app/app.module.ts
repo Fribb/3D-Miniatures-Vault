@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { FlexLayoutModule } from "ngx-flexible-layout";
 import { HeaderComponent } from "./header/header.component";
 import { FooterComponent } from "./footer/footer.component";
 import { MiniaturesComponent } from "./content/miniatures/miniatures.component";
@@ -22,7 +21,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FlexLayoutModule,
 
     // Material
     MatSidenavModule,
